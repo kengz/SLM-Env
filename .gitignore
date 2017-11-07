@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg*
+*.manifest
+.cache
+src/
+htmlcov/
+coverage.xml
+.coverage
+.env
+.venv
+venv/
+ENV/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# System
+.DS_Store
