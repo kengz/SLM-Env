@@ -1,7 +1,7 @@
 {
-  "name": "slm-env-3dball",
+  "name": "slm-env-envname",
   "version": "1.0.0",
-  "description": "SLM Env 3DBall",
+  "description": "SLM Env",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
