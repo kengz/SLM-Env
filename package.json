@@ -1,0 +1,24 @@
+{
+  "name": "slm-env-3dball",
+  "version": "1.0.0",
+  "description": "SLM Env 3DBall",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kengz/SLM-Env.git"
+  },
+  "keywords": [
+    "SLM",
+    "Unity",
+    "environment"
+  ],
+  "author": "kengz <kengzwl@gmail.com>, lgraesser",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/kengz/SLM-Env/issues"
+  },
+  "homepage": "https://github.com/kengz/SLM-Env#readme"
+}
