@@ -13,6 +13,7 @@ coverage.xml
 .venv
 venv/
 ENV/
+build/
 
 # Jupyter Notebook
 .ipynb_checkpoints
