@@ -1,78 +1,76 @@
 # SLM-Env
-Unity environment binaries for [SLM-Lab](https://github.com/kengz/SLM-Lab), built from [kengz/ml-agents](https://github.com/kengz/ml-agents).
 
-If you're just using prebuilt environments for the Lab, just install the released binaries via `yarn`: e.g. `yarn add slm-env-3dball`.
+Build Unity environment binaries for [SLM-Lab](https://github.com/kengz/SLM-Lab) and release on npm for easy distribution.
 
-This repository hosts the built Unity environment binaries released to `npm`.
+To use a prebuilt environment, just add its npm package, e.g. `yarn add slm-lab-3dball`.
 
 ## Installation
 
-You need this repo `SLM-Env` and the builder repo [`kengz/ml-agents`](https://github.com/kengz/ml-agents.git) (use the fork as opposed to `Unity/ml-agents`).
+Building a binary requires 4 things:
 
-```shell
-git clone https://github.com/kengz/SLM-Env.git
-git clone https://github.com/kengz/ml-agents.git
-```
-
-Then follow the setup instruction and intro from `ml-agents` for Unity.
-
-## Naming Convention
-
-Since the binaries are committed to Github, released on `npm`, and used by SLM-Lab, follow the convention compatible to all of them.
-
-- Unity raw assets can follow Unity convention: `CamelCase`, e.g. `3DBall`
-- built binaries `env_name`: `kebab-case`, e.g. `3dball`
-- git branch name the same as `env_name`: `kebab-case`, e.g. `3dball`
-- `npm` package name prepended with `slm-env-`, e.g. `slm-env-3dball`
-
-## Build Unity Environment
-
-1. Build your Unity environment and commit asset source code to `ml-agents` repo. For the most part follow the [original doc](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Getting-Started-with-Balance-Ball.md#building-unity-environment). Remember the core settings:
-    - `Player > Resolution and Presentation > Run in Background (checked)`
-    - `Player > Resolution and Presentation > Display Resolution Dialog (Disabled)`
-    - `Academy > Brain > External`
-
-2. When ready to build binary, decide on an `env_name`, e.g. `3dball`. You may want to check on [`npm`](https://www.npmjs.com/) that the name `slm-env-3dball` is not already taken, so you can release.
-
-3. Come to this `SLM-Env` repo, create a new git branch from `master`:
-  ```shell
-  cd SLM-Env
-  git checkout master
-  git checkout -b 3dball
+1. [Node.js with `npm`](https://nodejs.org/en/download/package-manager/)
+2. the Unity editor, installed via [Unity Hub](https://unity3d.com/get-unity/download). Go to `Unity Hub > Installs > Editor > Add Modules > Linux Build Support` to enable Linux builds.
+3. [ml-agents repo](https://github.com/Unity-Technologies/ml-agents) with the environment's Unity assets:
+  ```bash
+  git clone https://github.com/Unity-Technologies/ml-agents.git
+  ```
+4. this repo:
+  ```bash
+  git clone https://github.com/kengz/SLM-Env.git
   ```
 
-4. Build these versions of binaries and save to `SLM-Env/build/`:
-  - MacOSX version
-    - make `Academy > Training Configuration` as follow (or leave as-is if smaller than `Inference Configuration`):
-      - Width: 128
-      - Height: 72
-      - Quality Level: 0
-      - Time Scale: 100
-    - build directory: `SLM-Env/build/`
-    - save name: `3dball`
-  - Linux version
-    - make `Training Configuration` same as MacOSX
-    - `Headless Mode (checked)`
-    - save name: `3dball`
+## Build a Unity Environment binary
 
-Next, ready to release.
+The goal is to build MacOSX and Ubuntu binaries that can be used in `ml-agents`'s gym API. Currently this also means restriction to using only non-vector environments.
+
+In this example, we will use the Walker environment. We also recommend first going through the Unity Hub tutorial to get a basic knowledge about the editor. [Reference from here](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Executable.md).
+
+1. Open the `ml-agents/UnitySDK` folder in the Unity editor.
+
+2. In the Assets tab, find Walker under `ML-Agents > Examples > Walker > Scenes > Walker`. Hit the play button to preview it.
+
+3. Make any necessary asset changes:
+  1. to enable programmatic control, go to `WalkerAcademy` and check `control` in the Inspector tab.
+  2. since we're not supporting vector environments, remove the extra walker clones but selecting all but the first `WalkerPair` game objects unchecking them in the Inspector tab.
+  3. next, open the asset `Walker > Brains > WalkerLearning` and in the Inspector tab, change `Vector Observation > Stacked Vectors` to 1. Also, click on Model and delete it so we don't include the pretrained TF weights.
+
+Go to `Edit > Project Settings > Player > Resolution and Presentation`. Ensure `Run in Background (checked)` and `Display Resolution Dialog (Disabled)`.
+
+4. Now we're ready to build the binaries. Go to `File > Build Settings`:
+  1. click `Add Open Scenes` and add your scene
+  2. click `Player Settings` to show the Inspector tab. Check `Run in Background`, set `Display Resolution Dialog` to 'Disabled'. Optionally, set `Fullscreen Mode` to 'Windowed'.
+  3. build one for Mac OS X. Hit `Build and Run` to render immediately after building. Choose the directory `SLM-Env/bin/` and use the name `unitywalker-v0`.
+  4. build one for Linux. Hit `Build`, and use the same directory and name.
+
+5. Test the binary. First ensure you have the `mlagents_envs` (version `0.9.2`) and `gym_unity` pip packages installed from ml-agents. Use the following script to run an example control loop:
+  ```python
+  from gym_unity.envs import UnityEnv
+
+  env = UnityEnv('/Users/YOURNAME/SLM-Env/bin/unitywalker-v0', 0)
+
+  state = env.reset()
+  for i in range(500):
+      action = env.action_space.sample()
+      state, reward, done, info = env.step(action)
+  ```
+
+6. Git-commit the `bin` folder in the SLM-Env repo.
+
+The binary is now ready. Next, release it to `npm`.
+
 
 ## Release
 
-1. Open up `package.json` and update:
-  - replace `envname` as proper: `"name": "slm-env-3dball",`
-  - if this is an update, bump version. Default is `"version": "1.0.0",`
+>Note: use kebab-case naming convention with prefix `slm-env` and OpenAI gym convention, so `slm-env-unitywalker-v0`
 
-2. commit and push the new `build/` folder and `package.json`:
-  ```shell
-  git add build/
-  git add package.json
-  git commit -m 'add 3dball'
-  git push --set-upstream origin 3dball
-  ```
+1. Open up `package.json` and update:
+  - replace `envname` as appropriate: `"name": "slm-env-unitywalker-v0",`
+  - update version
+
+2. Copy both the MacOSX and Linux binary files from `bin/` to `build/`
 
 3. Release to `npm` (make sure you are logged in first, by `npm login`):
-  ```shell
+  ```bash
   npm publish
   ```
 
@@ -81,8 +79,8 @@ Next, ready to release.
   npm ERR! registry error parsing json
   npm ERR! publish Failed PUT 403
   npm ERR! code E403
-  npm ERR! You cannot publish over the previously published version 1.0.0. : slm-env-3dball
+  npm ERR! You cannot publish over the previously published version 1.0.0. : slm-env-unitywalker-v0
   ```
-  It should be available on [npmjs.com](https://www.npmjs.com/), just search for your package `slm-env-3dball`.
+  It should be available on [npmjs.com](https://www.npmjs.com/), just search for your package `slm-env-unitywalker-v0`.
 
 4. Add the release to `SLM-Lab` for usage: `yarn add slm-env-3dball`

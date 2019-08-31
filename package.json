@@ -1,6 +1,6 @@
 {
-  "name": "slm-env-envname",
-  "version": "1.0.0",
+  "name": "slm-env-unitywalker-v0",
+  "version": "0.0.1",
   "description": "SLM Env",
   "main": "index.js",
   "scripts": {
