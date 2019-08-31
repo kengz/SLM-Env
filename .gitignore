@@ -13,6 +13,7 @@ coverage.xml
 .venv
 venv/
 ENV/
+bin/
 build/
 
 # Jupyter Notebook

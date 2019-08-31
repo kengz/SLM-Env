@@ -54,8 +54,6 @@ Go to `Edit > Project Settings > Player > Resolution and Presentation`. Ensure `
       state, reward, done, info = env.step(action)
   ```
 
-6. Git-commit the `bin` folder in the SLM-Env repo.
-
 The binary is now ready. Next, release it to `npm`.
 
 
