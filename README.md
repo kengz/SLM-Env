@@ -2,7 +2,7 @@
 
 Build Unity environment binaries for [SLM-Lab](https://github.com/kengz/SLM-Lab) and release on npm for easy distribution.
 
-To use a prebuilt environment, just add its npm package, e.g. `yarn add slm-lab-3dball`.
+To use a prebuilt environment, just add its npm package, e.g. `yarn add slm-lab-unitywalker-v0`.
 
 ## Installation
 
@@ -84,4 +84,4 @@ The binary is now ready. Next, release it to `npm`.
   ```
   It should be available on [npmjs.com](https://www.npmjs.com/), just search for your package `slm-env-unitywalker-v0`.
 
-4. Add the release to `SLM-Lab` for usage: `yarn add slm-env-3dball`
+4. Add the release to `SLM-Lab` for usage: `yarn add slm-env-unitywalker-v0`
