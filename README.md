@@ -23,7 +23,10 @@ Building a binary requires 4 things:
 
 The goal is to build MacOSX and Ubuntu binaries that can be used in `ml-agents`'s gym API. Currently this also means restriction to using only non-vector environments.
 
-In this example, we will use the Walker environment. We also recommend first going through the Unity Hub tutorial to get a basic knowledge about the editor. [Reference from here](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Executable.md).
+In this example, we will use the Walker environment. We also recommend first going through the Unity Hub tutorial to get a basic knowledge about the editor.
+
+- [Build reference](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Executable.md)
+- [Environment reference](https://github.com/Unity-Technologies/ml-agents/blob/master/docs/Learning-Environment-Examples.md)
 
 1. Open the `ml-agents/UnitySDK` folder in the Unity editor.
 
