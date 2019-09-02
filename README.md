@@ -6,15 +6,14 @@ To use a prebuilt environment, just add its npm package, e.g. `yarn add slm-lab-
 
 ## Installation
 
-Building a binary requires 4 things:
+Building a binary requires 3 things:
 
-1. [Node.js with `npm`](https://nodejs.org/en/download/package-manager/)
-2. the Unity editor, installed via [Unity Hub](https://unity3d.com/get-unity/download). Go to `Unity Hub > Installs > Editor > Add Modules > Linux Build Support` to enable Linux builds.
-3. [ml-agents repo](https://github.com/Unity-Technologies/ml-agents) with the environment's Unity assets:
+1. the Unity editor, installed via [Unity Hub](https://unity3d.com/get-unity/download). Go to `Unity Hub > Installs > Editor > Add Modules > Linux Build Support` to enable Linux builds.
+2. [ml-agents repo](https://github.com/Unity-Technologies/ml-agents) with the environment's Unity assets:
   ```bash
   git clone https://github.com/Unity-Technologies/ml-agents.git
   ```
-4. this repo:
+3. this repo:
   ```bash
   git clone https://github.com/kengz/SLM-Env.git
   ```
@@ -34,22 +33,19 @@ In this example, we will use the Walker environment. We also recommend first goi
 
 3. Make any necessary asset changes:
   1. to enable programmatic control, go to `WalkerAcademy` and check `control` in the Inspector tab.
-  2. since we're not supporting vector environments, remove the extra walker clones but selecting all but the first `WalkerPair` game objects unchecking them in the Inspector tab.
-  3. next, open the asset `Walker > Brains > WalkerLearning` and in the Inspector tab, change `Vector Observation > Stacked Vectors` to 1. Also, click on Model and delete it so we don't include the pretrained TF weights.
-
-Go to `Edit > Project Settings > Player > Resolution and Presentation`. Ensure `Run in Background (checked)` and `Display Resolution Dialog (Disabled)`.
+  2. open the asset `Walker > Brains > WalkerLearning` and in the Inspector tab, change `Vector Observation > Stacked Vectors` to 1. Also, click on Model and delete it so we don't include the pretrained TF weights.
 
 4. Now we're ready to build the binaries. Go to `File > Build Settings`:
   1. click `Add Open Scenes` and add your scene
   2. click `Player Settings` to show the Inspector tab. Check `Run in Background`, set `Display Resolution Dialog` to 'Disabled'. Optionally, set `Fullscreen Mode` to 'Windowed'.
-  3. build one for Mac OS X. Hit `Build and Run` to render immediately after building. Choose the directory `SLM-Env/bin/` and use the name `unitywalker-v0`.
+  3. build one for Mac OS X. Hit `Build and Run` to render immediately after building. Choose the directory `SLM-Env/build/` and use the name `UnityWalker-v0`.
   4. build one for Linux. Hit `Build`, and use the same directory and name.
 
-5. Test the binary. First ensure you have the `mlagents_envs` (version `0.9.2`) and `gym_unity` pip packages installed from ml-agents. Use the following script to run an example control loop:
+5. Test the binary. First ensure you have the `gym_unity` pip packages installed from ml-agents. Use the following script to run an example control loop:
   ```python
   from gym_unity.envs import UnityEnv
 
-  env = UnityEnv('/Users/YOURNAME/SLM-Env/bin/unitywalker-v0', 0)
+  env = UnityEnv('/Users/YOURNAME/SLM-Env/build/UnityWalker-v0', 0, multiagent=True)
 
   state = env.reset()
   for i in range(500):
@@ -57,31 +53,8 @@ Go to `Edit > Project Settings > Player > Resolution and Presentation`. Ensure `
       state, reward, done, info = env.step(action)
   ```
 
-The binary is now ready. Next, release it to `npm`.
 
+## Usage
 
-## Release
-
->Note: use kebab-case naming convention with prefix `slm-env` and OpenAI gym convention, so `slm-env-unitywalker-v0`
-
-1. Open up `package.json` and update:
-  - replace `envname` as appropriate: `"name": "slm-env-unitywalker-v0",`
-  - update version
-
-2. Copy both the MacOSX and Linux binary files from `bin/` to `build/`
-
-3. Release to `npm` (make sure you are logged in first, by `npm login`):
-  ```bash
-  npm publish
-  ```
-
-  Since the binaries are huge, `npm` will throw an error near the end of it. Just ignore that.
-  ```shell
-  npm ERR! registry error parsing json
-  npm ERR! publish Failed PUT 403
-  npm ERR! code E403
-  npm ERR! You cannot publish over the previously published version 1.0.0. : slm-env-unitywalker-v0
-  ```
-  It should be available on [npmjs.com](https://www.npmjs.com/), just search for your package `slm-env-unitywalker-v0`.
-
-4. Add the release to `SLM-Lab` for usage: `yarn add slm-env-unitywalker-v0`
+- git commit the binaries in `build/`, then push it.
+- add this repo as a git submodule under `SLM-Lab/slm_lab/env/` to expose the environment binaries.
