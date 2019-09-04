@@ -34,6 +34,7 @@ In this example, we will use the Walker environment. We also recommend first goi
 3. Make any necessary asset changes:
   1. to enable programmatic control, go to `WalkerAcademy` and check `control` in the Inspector tab.
   2. open the asset `Walker > Brains > WalkerLearning` and in the Inspector tab, change `Vector Observation > Stacked Vectors` to 1. Also, click on Model and delete it so we don't include the pretrained TF weights.
+  3. Go to `Window > Rendering > LightingSettings` and uncheck `Realtime Global Illumination` and `Baked Global Illumination`. This is to prevent Enlighten from being used and spawning too many threads on Linux.
 
 4. Now we're ready to build the binaries. Go to `File > Build Settings`:
   1. click `Add Open Scenes` and add your scene
@@ -57,4 +58,4 @@ In this example, we will use the Walker environment. We also recommend first goi
 ## Usage
 
 - git commit the binaries in `build/`, then push it.
-- add this repo as a git submodule under `SLM-Lab/slm_lab/env/` to expose the environment binaries.
+- clone this repo under SLM Lab: `git clone https://github.com/kengz/SLM-Env.git ./slm_lab/env/SLM-Env`
